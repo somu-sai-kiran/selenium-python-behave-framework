@@ -1,0 +1,8 @@
+lear
+__pycache__/
+*.pyc
+reports/
+screenshots/
+allure-results/
+venv/
+.idea/
