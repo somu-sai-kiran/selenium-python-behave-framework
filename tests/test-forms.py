@@ -1,24 +1,34 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 end_point = "https://demoqa.com/automation-practice-form"
 
 driver = webdriver.Chrome()
 driver.maximize_window()
 driver.implicitly_wait(10)
+wait = WebDriverWait(driver, 10)
 
 driver.get(end_point)
 
 def select_dropdown(element, option):
     element.send_keys(option)
-    time.sleep(2)
+    wait.until(
+        EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "div[class*='option']")
+        )
+    )
     element.send_keys(Keys.ENTER)
 
 def select_dropdown_child(parent, child, option):
     parent.click()
-    time.sleep(2)
+    wait.until(
+        EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "div[class*='option']")
+        )
+    )
     child.send_keys(option)
     child.send_keys(Keys.ENTER)
 
@@ -56,10 +66,17 @@ select_dropdown_child(state, state_input, "NCR")
 select_dropdown_child(city, city_input, "Delhi")
 dob.send_keys("24 May 2026")
 
+wait.until(
+    EC.element_to_be_clickable((By.ID, "submit"))
+)
+
 submit.click()
 
-close = driver.find_element(By.ID, "closeLargeModal")
-driver.implicitly_wait(10)
+close = wait.until(
+    EC.visibility_of_element_located(
+        (By.ID, "closeLargeModal")
+    )
+)
 driver.save_screenshot(r"C:\Users\saiki\Documents\Git-Repos\selenium-python-behave-framework\screenshots\form_submission_test_evidence.png")
 
 # Validate form submission
