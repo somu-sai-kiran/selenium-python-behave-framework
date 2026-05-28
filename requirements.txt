@@ -3,3 +3,4 @@ behave
 pytest
 webdriver-manager
 allure-behave
+allure-pytest
